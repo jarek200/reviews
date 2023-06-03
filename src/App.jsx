@@ -13,16 +13,12 @@ const App = () => {
     }
     if (string === 'random') {
       let random = Math.floor(Math.random() * reviews.length)
-      if (random === index) {
-        random = index + 1
-      }
+      if (random === index) random = index + 1
       setIndex(random)
     }
     if (string === 'next') {
       setIndex(index + 1)
-      if (index === reviews.length - 1) {
-        setIndex(0)
-      }
+      if (index === reviews.length - 1) setIndex(0)
     }
 
     setProfile(reviews[index])

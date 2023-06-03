@@ -1,29 +1,38 @@
 import React, { useState } from 'react'
 import Profile from './assets/Profile'
-import { FaBeer } from 'react-icons/fa'
+import { FaChevronLeft, FaChevronRight, FaQuoteRight } from 'react-icons/fa'
 import reviews from './data'
+import { random } from 'lodash'
 const App = () => {
   const [index, setIndex] = useState(0)
-  const [profile, setProfile] = useState(reviews[index])
+  const { id, name, job, image, text } = reviews[index]
 
+  const checkNumber = number => {
+    if (number > reviews.length - 1) return 0
+    if (number < 0) return reviews.length - 1
+    if (number === index) return checkNumber(--number)
+    return number
+  }
   const handleClick = string => {
-    if (string === 'prev') {
-      setIndex(index - 1)
-      if (index === 0) setIndex(reviews.length - 1)
-    }
-    if (string === 'random') {
-      let random = Math.floor(Math.random() * reviews.length)
-      if (random === index) random = index + 1
-      setIndex(random)
-    }
-    if (string === 'next') {
-      setIndex(index + 1)
-      if (index === reviews.length - 1) setIndex(0)
-    }
-
-    setProfile(reviews[index])
+    if (string === 'prev') setIndex(prev => checkNumber(--prev))
+    if (string === 'next') setIndex(prev => checkNumber(++prev))
+    if (string === 'random') setIndex(checkNumber(random(reviews.length)))
   }
 
-  return <Profile key={profile.id} {...profile} handleClick={handleClick} FaBeer={FaBeer} />
+  return (
+    <main>
+      <Profile
+        key={id}
+        job={job}
+        text={text}
+        name={name}
+        image={image}
+        handleClick={handleClick}
+        FaQuoteRight={FaQuoteRight}
+        FaChevronLeft={FaChevronLeft}
+        FaChevronRight={FaChevronRight}
+      />
+    </main>
+  )
 }
 export default App
